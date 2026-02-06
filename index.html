@@ -8,20 +8,12 @@
   </head>
   <body>
     <div class="app">
-      <header class="hero">
-        <div>
-          <span class="eyebrow">Daily Focus</span>
-          <h1>Daily Voice Notes & Prioritized Tasks</h1>
-          <p>
-            Capture quick voice notes, attach them to tasks, and plan your day
-            with a prioritized to-do list.
-          </p>
-        </div>
-        <div class="hero__art" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+      <header>
+        <h1>Daily Voice Notes & Prioritized Tasks</h1>
+        <p>
+          Capture quick voice notes, then plan your day with a prioritized to-do
+          list.
+        </p>
       </header>
 
       <section class="card" aria-labelledby="voice-notes-title">
@@ -59,10 +51,6 @@
             <option value="2" selected>Medium priority</option>
             <option value="1">Low priority</option>
           </select>
-          <label class="sr-only" for="note-select">Attach voice note</label>
-          <select id="note-select">
-            <option value="">Attach voice note (optional)</option>
-          </select>
           <button class="primary" type="submit">Add Task</button>
         </form>
 
@@ -79,7 +67,6 @@
           </label>
           <span class="task__priority"></span>
         </div>
-        <div class="task__note"></div>
         <button class="text-button" type="button">Remove</button>
       </div>
     </template>

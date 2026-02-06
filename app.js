@@ -5,14 +5,12 @@ const recordingsList = document.getElementById("recordings");
 const taskForm = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const prioritySelect = document.getElementById("priority-select");
-const noteSelect = document.getElementById("note-select");
 const taskList = document.getElementById("task-list");
 const taskCount = document.getElementById("task-count");
 const taskTemplate = document.getElementById("task-template");
 
 let mediaRecorder = null;
 let audioChunks = [];
-const recordings = [];
 const tasks = [];
 
 const priorityLabels = {
@@ -24,21 +22,6 @@ const priorityLabels = {
 const updateTaskCount = () => {
   const count = tasks.length;
   taskCount.textContent = `${count} ${count === 1 ? "task" : "tasks"}`;
-};
-
-const refreshNoteSelect = () => {
-  noteSelect.innerHTML = "";
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Attach voice note (optional)";
-  noteSelect.appendChild(defaultOption);
-
-  recordings.forEach((recording) => {
-    const option = document.createElement("option");
-    option.value = recording.id;
-    option.textContent = recording.label;
-    noteSelect.appendChild(option);
-  });
 };
 
 const sortTasks = () => {
@@ -62,7 +45,6 @@ const renderTasks = () => {
     const checkbox = node.querySelector("input[type='checkbox']");
     const text = node.querySelector(".task__text");
     const priority = node.querySelector(".task__priority");
-    const noteContainer = node.querySelector(".task__note");
     const removeButton = node.querySelector("button");
 
     checkbox.checked = task.completed;
@@ -72,20 +54,6 @@ const renderTasks = () => {
     }
 
     priority.textContent = `${priorityLabels[task.priority]} priority`;
-
-    noteContainer.innerHTML = "";
-    if (task.note) {
-      const label = document.createElement("span");
-      label.className = "task__note-label";
-      label.textContent = "Voice note";
-
-      const audio = document.createElement("audio");
-      audio.controls = true;
-      audio.src = task.note.url;
-
-      noteContainer.appendChild(label);
-      noteContainer.appendChild(audio);
-    }
 
     checkbox.addEventListener("change", () => {
       tasks[index].completed = checkbox.checked;
@@ -115,21 +83,13 @@ const addRecording = (audioURL) => {
   const audio = document.createElement("audio");
   const label = document.createElement("span");
 
-  const labelText = `Note ${recordings.length + 1}`;
   audio.controls = true;
   audio.src = audioURL;
-  label.textContent = labelText;
+  label.textContent = `Note ${recordingsList.children.length + 1}`;
 
   item.appendChild(label);
   item.appendChild(audio);
   recordingsList.appendChild(item);
-
-  recordings.unshift({
-    id: `note-${Date.now()}`,
-    label: labelText,
-    url: audioURL,
-  });
-  refreshNoteSelect();
 };
 
 const startRecording = async () => {
@@ -176,24 +136,16 @@ taskForm.addEventListener("submit", (event) => {
   }
 
   const priority = Number(prioritySelect.value);
-  const selectedRecording = recordings.find(
-    (recording) => recording.id === noteSelect.value
-  );
   tasks.push({
     description,
     priority,
-    note: selectedRecording
-      ? { label: selectedRecording.label, url: selectedRecording.url }
-      : null,
     completed: false,
     createdAt: Date.now(),
   });
 
   taskInput.value = "";
   prioritySelect.value = "2";
-  noteSelect.value = "";
   renderTasks();
 });
 
-refreshNoteSelect();
 renderTasks();
