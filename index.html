@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice Notes & Daily Priorities</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <h1>Daily Voice Notes & Prioritized Tasks</h1>
+        <p>
+          Capture quick voice notes, then plan your day with a prioritized to-do
+          list.
+        </p>
+      </header>
+
+      <section class="card" aria-labelledby="voice-notes-title">
+        <div class="card__header">
+          <h2 id="voice-notes-title">Voice Notes</h2>
+          <span id="recording-status" class="status">Idle</span>
+        </div>
+        <div class="controls">
+          <button id="record-btn" class="primary">Start Recording</button>
+          <button id="stop-btn" class="secondary" disabled>Stop</button>
+        </div>
+        <p class="hint">
+          Tip: Allow microphone access in your browser to start recording.
+        </p>
+        <ul id="recordings" class="recordings" aria-live="polite"></ul>
+      </section>
+
+      <section class="card" aria-labelledby="todo-title">
+        <div class="card__header">
+          <h2 id="todo-title">Daily Tasks</h2>
+          <span id="task-count" class="status">0 tasks</span>
+        </div>
+
+        <form id="task-form" class="task-form">
+          <label class="sr-only" for="task-input">Task description</label>
+          <input
+            id="task-input"
+            type="text"
+            placeholder="Add a task (e.g. Finish project update)"
+            required
+          />
+          <label class="sr-only" for="priority-select">Priority</label>
+          <select id="priority-select">
+            <option value="3">High priority</option>
+            <option value="2" selected>Medium priority</option>
+            <option value="1">Low priority</option>
+          </select>
+          <button class="primary" type="submit">Add Task</button>
+        </form>
+
+        <div class="task-list" id="task-list" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <template id="task-template">
+      <div class="task">
+        <div class="task__details">
+          <label class="task__label">
+            <input type="checkbox" />
+            <span class="task__text"></span>
+          </label>
+          <span class="task__priority"></span>
+        </div>
+        <button class="text-button" type="button">Remove</button>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
